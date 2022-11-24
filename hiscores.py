@@ -82,7 +82,7 @@ def getHiscores(user):
         i = i + 1
     return userHiscores
 
-print(getHiscores('hilmar'))
+
 
 
 
