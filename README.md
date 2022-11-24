@@ -1,2 +1,1 @@
-# osrs-hiscores
-# hehe Weeee haha!
+# OSRS Hiscores API shenanigans
