@@ -1,0 +1,14 @@
+{
+    "gutti": {
+        "accountType": 0
+    },
+    "hilmar": {
+        "accountType": 1
+    },
+    "foo": {
+        "accountType": 2
+    },
+    "bar": {
+        "accountType": 3
+    }
+}
