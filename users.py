@@ -11,6 +11,7 @@ Account type
 """
 userListPath = './data/userlist.json'
 userStatsPath = './data/userstats.json'
+historicUserStatsPath = './data/userdata/'
 
 if not os.path.exists('./data/userdata'):
     print('Did not find data directory, creating ./data/userdata')
@@ -47,14 +48,25 @@ def writeStats(user):
             fileData = file.read()
             jsonData = json.loads(fileData)
             jsonData.update(x)
-            with open(userStatsPath, 'w') as file:
-                file.write(json.dumps(jsonData, indent=4))
-            print(f'Adding stats for {user} to {userStatsPath}')
+        with open(userStatsPath, 'w') as file:
+            file.write(json.dumps(jsonData, indent=4))
+        print(f'Adding stats for {user} to {userStatsPath}')
     except:
         with open(userStatsPath, 'w') as file:
             file.write(json.dumps(x, indent=4))
             print(f'Did not find userstats file, creating {userStatsPath} and adding {user} to file.')
 
+
+def saveHistoricData(user):
+    timestamp = str(int(time.time()))
+    filename = user+'-'+timestamp+'.json'
+    filepath = historicUserStatsPath+filename
+    userStats = hiscores.getHiscores(user)
+    x = {user: userStats}
+    with open(filepath, 'w') as file:
+        file.write(json.dumps(x, indent=4))
+
 writeStats('hilmar')
 writeStats('ehutt')
-
+saveHistoricData('hilmar')
+saveHistoricData('ehutt')

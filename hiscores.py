@@ -70,15 +70,15 @@ def getHiscores(user):
     skillSplit = getApi(user)
     i = 0
     for line in getSeperatedSkillList()[0::3]:
-        userHiscores.update({line: skillSplit[i][0]})
+        userHiscores.update({line: int(skillSplit[i][0])})
         i = i + 1
     i = 0
     for line in getSeperatedSkillList()[1::3]:
-        userHiscores.update({line: skillSplit[i][1]})
+        userHiscores.update({line: int(skillSplit[i][1])})
         i = i + 1
     i = 0
     for line in getSeperatedSkillList()[2::3]:
-        userHiscores.update({line: skillSplit[i][2]})
+        userHiscores.update({line: int(skillSplit[i][2])})
         i = i + 1
     return userHiscores
 

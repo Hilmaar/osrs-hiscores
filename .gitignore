@@ -1,6 +1,8 @@
 # Oldfiles
 old_files/**
 test/**
+data/userdata/**
+data/*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -131,3 +133,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.gitignore
+
