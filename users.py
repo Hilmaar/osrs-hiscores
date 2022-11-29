@@ -93,10 +93,27 @@ def removeOldHistoricData(user, length): # length represents time since creation
         for file in fileAge:
             if fileAge[file] >= ageLength:
                 fileName = user+'-'+str(file)+'.json'
-                #os.remove(userDataDir+'/'+fileName)
+                os.remove(userDataDir+'/'+fileName)
                 deletingFiles += fileName+', '
                 
         if len(deletingFiles) > 10:
             print(f'Deleting files: {deletingFiles[:-2]}.')
         else:
             print(f'No files were older than {length} minutes.')
+
+def getAllUsers():
+    users = []
+    with open(userStatsPath, 'r') as file:
+        fileData = file.read()
+        jsonData = json.loads(fileData)
+    for user in jsonData:
+        users.append(user)
+    return users
+
+def saveAllUsers():
+    for user in getAllUsers():
+        saveHistoricData(user)
+
+
+
+saveAllUsers()
