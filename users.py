@@ -42,7 +42,7 @@ def add(user, accountType):
         except:
             with open(userListPath, 'w') as file:
                 file.write(json.dumps(x, indent=4))
-                print(f'Userfile not found, creating user file and adding user {user} with account type {level}')
+                print(f'Userfile not found, creating user file and adding user {user} with account type {accountType}')
                 
 
 # Updates ./data/userstats.json with new data from the OSRS Hiscores API.
