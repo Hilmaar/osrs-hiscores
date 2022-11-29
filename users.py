@@ -2,27 +2,32 @@ import json
 import os
 import time
 import hiscores
-"""
-Account type
-0 = Main
-1 = Ironman
-2 = Hardcore Ironman
-3 = Ultimate Ironman
-"""
+
+
 userListPath = './data/userlist.json'
 userStatsPath = './data/userstats.json'
 historicUserStatsPath = './data/userdata/'
+
 
 if not os.path.exists('./data/userdata'):
     print('Did not find data directory, creating ./data/userdata')
     os.makedirs('./data/userdata')
 
 
-def add(user, level):
-    if type(user) != str or type(level) != int:
+# Adds a user to ./data/userlist.json
+# 
+# Account types
+# 0 = Main
+# 1 = Ironman
+# 2 = Hardcore Ironman
+# 3 = Ultimate Ironman
+#
+# # # # #
+def add(user, accountType):
+    if type(user) != str or type(accountType) != int:
         print("Incorrect arguments. Usage: add('string', int)")
     else:
-        x = {user: {"accountType": level}}
+        x = {user: {"accountType": accountType}}
         try:
             with open(userListPath, 'r') as file:
                 rawUserFileData = file.read()
@@ -31,7 +36,7 @@ def add(user, level):
                     jsonUserData.update(x)
                     with open(userListPath, 'w') as file:
                         file.write(json.dumps(jsonUserData, indent=4))
-                    print(f'Adding user {user} with account type {level}.')
+                    print(f'Adding user {user} with account type {accountType}.')
                 else:
                     print(f'User {user} already exists.')
         except:
@@ -40,6 +45,7 @@ def add(user, level):
                 print(f'Userfile not found, creating user file and adding user {user} with account type {level}')
                 
 
+# Updates ./data/userstats.json with new data from the OSRS Hiscores API.
 def writeStats(user):
     userStats = hiscores.getHiscores(user)
     x = {user: userStats}
@@ -50,14 +56,15 @@ def writeStats(user):
             jsonData.update(x)
         with open(userStatsPath, 'w') as file:
             file.write(json.dumps(jsonData, indent=4))
-        print(f'Adding stats for {user} to {userStatsPath}')
+        print(f'Updating stats for {user} to {userStatsPath}')
     except:
         with open(userStatsPath, 'w') as file:
             file.write(json.dumps(x, indent=4))
             print(f'Did not find userstats file, creating {userStatsPath} and adding {user} to file.')
 
 
-def saveHistoricData(user):
+# Saves hiscore data for user in a new file under ./data/userdata with filename format: {user}-{unixtime}.json.
+def saveHistoricalData(user):
     userDataDir = historicUserStatsPath+user
     if not os.path.exists(userDataDir):
         print(f'Did not find directory for user {user}, creating {userDataDir}.')
@@ -66,12 +73,13 @@ def saveHistoricData(user):
     filename = user+'-'+timestamp+'.json'
     filepath = userDataDir+'/'+filename
     userStats = hiscores.getHiscores(user)
-    x = {user: userStats}
     with open(filepath, 'w') as file:
-        file.write(json.dumps(x, indent=4))
+        file.write(json.dumps(userStats, indent=4))
     print(f'Wrote data for user {user} at {filepath}.')
 
-def removeOldHistoricData(user, length): # length represents time since creation of file in minutes.
+
+# Removes historical data files for a given user and file age.
+def removeOldHistoricalData(user, length): # length represents time since creation of file in minutes.
     userDataDir = historicUserStatsPath+user
     ageLength = length * 60 # Function input takes minutes, time is stored as unixtime (seconds.)
 
@@ -101,19 +109,37 @@ def removeOldHistoricData(user, length): # length represents time since creation
         else:
             print(f'No files were older than {length} minutes.')
 
+
+# Returns a list of users in userlist.json
 def getAllUsers():
     users = []
-    with open(userStatsPath, 'r') as file:
+    with open(userListPath, 'r') as file:
         fileData = file.read()
         jsonData = json.loads(fileData)
     for user in jsonData:
         users.append(user)
     return users
 
-def saveAllUsers():
+
+# Writes historical user data for every user in userfile.json
+def saveAllUsersHistoricalData():
     for user in getAllUsers():
-        saveHistoricData(user)
+        saveHistoricalData(user)
 
 
+# Updates userstats.json with new information from the OSRS API for all users in userfile.json
+def writeAllStats():
+    for user in getAllUsers():
+        writeStats(user)
 
-saveAllUsers()
+# Read stats from userstats.json
+def readStats(user):
+    try:
+        with open(userStatsPath, 'r') as file:
+            fileData = file.read()
+            jsonData = json.loads(fileData)
+            userData = jsonData[user]
+    except:
+        print(f'Did not find userstats file.')
+    return userData
+

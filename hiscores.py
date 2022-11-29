@@ -20,7 +20,7 @@ def getSeperatedSkillList(): #Reads a list of skills in the correct order given 
         seperatedSkillList.append(line)
     return seperatedSkillList
     
-def getApi(user): #Returns data as a 2d array, in the order found in ./hiscorelist.txt, ['rank', 'level', 'xp'].
+def getApi(user): #Returns data as a 2d list, in the order found in ./hiscorelist.txt, ['rank', 'level', 'xp'].
     if type(user) == str:
         response = requests.get(apiUrl+user).text.split('\n')
         skillSplit = []
