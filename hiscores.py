@@ -32,35 +32,6 @@ def getApi(user): #Returns data as a 2d array, in the order found in ./hiscoreli
         print(f'{user} is {type(user)}, expecting a string.')
         return 'Error'
 
-
-def getRank(user): #Returns a dict with the users' ranks. Keys being name of a skill and value the rank.
-    userRank = {}
-    i = 0
-    for line in getSkillList():
-        userRank.update({line: getApi(user)[i][0]})
-        i = i + 1
-    return userRank
-
-def getLevel(user): #Returns a dict with the users' levels. Keys being name of a skill and value the level.
-    userLevel = {}
-    i = 0
-    for line in getSkillList():
-        userLevel.update({line: getApi(user)[i][1]})
-        i = i + 1
-    return userLevel
-
-def getXp(user): #Returns a dict with the users' xp. Keys being name of a skill and value the xp.
-    userXp = {}
-    i = 0
-    for line in getSkillList():
-        userXp.update({line: getApi(user)[i][2]})
-        i = i + 1
-    return userXp
-
-
-
-
-
 # Returns a dict with the users' Rank, level and XP.
 # For example: 
 # {'overallRank': '719226', 'overallLevel': '1631', 'overallXP': '25527953', 'attackRank': '878352', 'attackLevel': '78', 'attackXP': '1639593'}

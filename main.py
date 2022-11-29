@@ -1,3 +1,3 @@
 import users
+import hiscores
 
-users.add('w0w', 0)
