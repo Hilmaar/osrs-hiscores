@@ -58,15 +58,45 @@ def writeStats(user):
 
 
 def saveHistoricData(user):
+    userDataDir = historicUserStatsPath+user
+    if not os.path.exists(userDataDir):
+        print(f'Did not find directory for user {user}, creating {userDataDir}.')
+        os.makedirs(userDataDir)
     timestamp = str(int(time.time()))
     filename = user+'-'+timestamp+'.json'
-    filepath = historicUserStatsPath+filename
+    filepath = userDataDir+'/'+filename
     userStats = hiscores.getHiscores(user)
     x = {user: userStats}
     with open(filepath, 'w') as file:
         file.write(json.dumps(x, indent=4))
+    print(f'Wrote data for user {user} at {filepath}.')
 
-writeStats('hilmar')
-writeStats('ehutt')
-saveHistoricData('hilmar')
-saveHistoricData('ehutt')
+def removeOldHistoricData(user, length): # length represents time since creation of file in minutes.
+    userDataDir = historicUserStatsPath+user
+    ageLength = length * 60 # Function input takes minutes, time is stored as unixtime (seconds.)
+
+    if not os.path.exists(userDataDir):
+        print(f'Did not find a directory containing historic data for user {user}.')
+    else:
+        files = os.listdir(userDataDir)
+        filelist = []
+        for file in files:
+            a = file.split('-')
+            b = a[1].split('.')
+            filelist.append(int((b[0])))
+        fileAge = {}
+        timeNow = int(time.time())
+        for file in filelist:
+            ageOfFile = round((timeNow - file))
+            fileAge[file] = ageOfFile
+        deletingFiles = ''
+        for file in fileAge:
+            if fileAge[file] >= ageLength:
+                fileName = user+'-'+str(file)+'.json'
+                #os.remove(userDataDir+'/'+fileName)
+                deletingFiles += fileName+', '
+                
+        if len(deletingFiles) > 10:
+            print(f'Deleting files: {deletingFiles[:-2]}.')
+        else:
+            print(f'No files were older than {length} minutes.')
