@@ -1,6 +1,8 @@
 import hiscores
 import users
 import json
+import pprint
+pp = pprint.PrettyPrinter(depth=4) # DEBUG
 
 
 # Returns which levels and XP have gone up since last time stats were written to userstats.json.
@@ -11,4 +13,26 @@ def gainz(user):
         if newStats[key] > oldStats[key] and not "Rank" in key:
             # TODO: Return a dict with keys and values that have gone up.
             print(f'{user} had {key}: {oldStats[key]}, but now has {key}: {newStats[key]}')
+
+# Returns levels gained since userstats.json was last updated.
+def gainedLevels(user):
+    newStats = hiscores.getHiscores(user)
+    oldStats = users.readStats(user)
+    stats = {}
+    for key in oldStats:
+        if newStats[key] > oldStats[key] and "Level" in key:
+            x = {key: {'new': newStats[key], 'old': oldStats[key]}}
+            stats.update(x)
+    return stats
+
+# Returns XP gained since userstats.json was last updated.
+def gainedXP(user):
+    newStats = hiscores.getHiscores(user)
+    oldStats = users.readStats(user)
+    gained = {}
+    for key in oldStats:
+        if newStats[key] > oldStats[key] and "XP" in key:
+            x = {key: {'new': newStats[key], 'old': oldStats[key]}}
+            gained.update(x)
+    return gained
 

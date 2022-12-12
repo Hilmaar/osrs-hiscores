@@ -79,7 +79,7 @@ def saveHistoricalData(user):
 
 
 # Removes historical data files for a given user and file age.
-def removeOldHistoricalData(user, length): # length represents time since creation of file in minutes.
+def removeOldHistoricalData(user, length): # length represents time since creation of file in minutes. (Will be changed to days, probably.)
     userDataDir = historicUserStatsPath+user
     ageLength = length * 60 # Function input takes minutes, time is stored as unixtime (seconds.)
 
