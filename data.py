@@ -18,12 +18,12 @@ def gainz(user):
 def gainedLevels(user):
     newStats = hiscores.getHiscores(user)
     oldStats = users.readStats(user)
-    stats = {}
+    gained = {}
     for key in oldStats:
         if newStats[key] > oldStats[key] and "Level" in key:
-            x = {key: {'new': newStats[key], 'old': oldStats[key]}}
-            stats.update(x)
-    return stats
+            x = {key: {'new': newStats[key], 'old': oldStats[key], 'diff': int(newStats[key])-int(oldStats[key])}}
+            gained.update(x)
+    return gained
 
 # Returns XP gained since userstats.json was last updated.
 def gainedXP(user):
@@ -32,7 +32,7 @@ def gainedXP(user):
     gained = {}
     for key in oldStats:
         if newStats[key] > oldStats[key] and "XP" in key:
-            x = {key: {'new': newStats[key], 'old': oldStats[key]}}
+            x = {key: {'new': newStats[key], 'old': oldStats[key], 'diff': int(newStats[key])-int(oldStats[key])}}
             gained.update(x)
     return gained
 
