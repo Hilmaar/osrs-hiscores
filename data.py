@@ -2,6 +2,7 @@ import hiscores
 import users
 import json
 import pprint
+import time
 pp = pprint.PrettyPrinter(depth=4) # DEBUG
 
 
@@ -35,4 +36,16 @@ def gainedXP(user):
             x = {key: {'new': newStats[key], 'old': oldStats[key], 'diff': int(newStats[key])-int(oldStats[key])}}
             gained.update(x)
     return gained
+
+
+#print(gainedXP('ehutt'))
+# Temporary function
+def printGainedXP(user):
+    gained = gainedXP(user)
+    x = ''
+    for key in gained:
+        x += (f'[ {time.strftime("%D - %H:%M:%S", time.localtime())} ] -> {user} gained {gained[key]["diff"]} {key}. (Was {gained[key]["old"]}, now has {gained[key]["new"]})\n')
+    return x
+
+
 

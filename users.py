@@ -2,16 +2,24 @@ import json
 import os
 import time
 import hiscores
+import config
+config = config.readConfig()
+userListPath = config['paths']['userListPath']
+userStatsPath = config['paths']['userStatsPath']
+historicUserStatsPath = config['paths']['historicUserStatsPath']
+#userListPath = './data/userlist.json'
+#userStatsPath = './data/userstats.json'
+#historicUserStatsPath = './data/userdata/'
 
 
-userListPath = './data/userlist.json'
-userStatsPath = './data/userstats.json'
-historicUserStatsPath = './data/userdata/'
 
+if not os.path.exists(config['paths']['dataDir']):
+    print(f'Did not find data directory, creating {config["paths"]["dataDir"]}')
+    os.makedirs(config['paths']['dataDir'])
 
-if not os.path.exists('./data/userdata'):
-    print('Did not find data directory, creating ./data/userdata')
-    os.makedirs('./data/userdata')
+if not os.path.exists(config['paths']['userDataDir']):
+    print(f'Did not find userdata directory, creating {config["paths"]["userDataDir"]}')
+    os.makedirs(config['paths']['userDataDir'])
 
 
 # Adds a user to ./data/userlist.json
@@ -56,7 +64,7 @@ def writeStats(user):
             jsonData.update(x)
         with open(userStatsPath, 'w') as file:
             file.write(json.dumps(jsonData, indent=4))
-        print(f'Updating stats for {user} to {userStatsPath}')
+        #print(f'Updating stats for {user} to {userStatsPath}')
     except:
         with open(userStatsPath, 'w') as file:
             file.write(json.dumps(x, indent=4))

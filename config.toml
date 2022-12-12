@@ -1,0 +1,10 @@
+[paths]
+dataDir = "./data/"
+userDataDir = "./data/userdata/"
+userListPath = "./data/userlist.json"
+userStatsPath = "./data/userstats.json"
+historicUserStatsPath = "./data/userdata/"
+
+[discord]
+token = "token_go_here"
+ownedId = "0123456789"
